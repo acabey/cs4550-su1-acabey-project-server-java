@@ -1,6 +1,6 @@
 package com.example.cs4550su1acabeyprojectserverjava.services;
 
-import com.example.cs4550su1acabeyserverjava.models.Widget;
+import com.example.cs4550su1acabeyprojectserverjava.models.Widget;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
