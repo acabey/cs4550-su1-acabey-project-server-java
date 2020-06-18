@@ -13,8 +13,11 @@ public interface WatchlistRepository
     @Query("SELECT watchlist FROM Watchlist watchlist")
     public List<Watchlist> findAllWatchlists();
 
-    @Query("SELECT watchlist FROM Watchlist watchlist WHERE watchlist.userId=:userId")
-    public List<Watchlist> findWatchlistsForOwner(@Param("userId") Integer userId);
+    @Query("SELECT watchlist FROM Watchlist watchlist WHERE watchlist.isPrivate=:false")
+    public List<Watchlist> findPublicWatchlists();
+
+    @Query("SELECT watchlist FROM Watchlist watchlist WHERE watchlist.ownerId=:ownerId")
+    public List<Watchlist> findWatchlistsForOwner(@Param("ownerId") Integer ownerId);
 
     @Query("SELECT watchlist FROM Watchlist watchlist WHERE watchlist.id=:watchlistId")
     public Watchlist findWatchlistById(@Param("watchlistId") Integer watchlistId);

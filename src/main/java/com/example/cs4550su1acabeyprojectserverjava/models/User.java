@@ -16,7 +16,7 @@ public class User {
     private String role;
     private String imageUrl;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "ownerId")
     private List<Watchlist> ownedWatchlists;
 
     @ManyToMany(mappedBy = "followers")
