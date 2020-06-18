@@ -27,6 +27,11 @@ public class WatchlistController {
         return watchlistService.deleteWatchlist(watchlistId);
     }
 
+    @GetMapping("/api/users/{ownerId}/watchlists")
+    public List<Watchlist> getWatchlistsForOwner(@PathVariable Integer ownerId) {
+        return watchlistService.findWatchlistsForOwner(ownerId);
+    }
+
     /**
      * For moderator / administrator: finds all watchlists
      * For user: finds public watchlists + their own watchlists
