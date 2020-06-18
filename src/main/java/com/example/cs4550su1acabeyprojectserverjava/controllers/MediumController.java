@@ -1,7 +1,6 @@
 package com.example.cs4550su1acabeyprojectserverjava.controllers;
 
 import com.example.cs4550su1acabeyprojectserverjava.models.Medium;
-import com.example.cs4550su1acabeyprojectserverjava.models.Widget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

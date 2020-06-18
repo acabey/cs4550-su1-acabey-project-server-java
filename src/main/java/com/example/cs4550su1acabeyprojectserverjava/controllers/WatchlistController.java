@@ -1,7 +1,7 @@
 package com.example.cs4550su1acabeyprojectserverjava.controllers;
 
 import com.example.cs4550su1acabeyprojectserverjava.models.Watchlist;
-import com.example.cs4550su1acabeyprojectserverjava.models.Widget;
+import com.example.cs4550su1acabeyprojectserverjava.services.WatchlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +15,10 @@ public class WatchlistController {
     WatchlistService watchlistService;
 
     @PostMapping("/api/watchlist")
-    public Integer createWatchlist(
-            @PathVariable Integer watchlistId,
+    public Watchlist createWatchlist(
+            @PathVariable Integer ownerId,
             @RequestBody Watchlist watchlist) {
-        return watchlistService.createWatchlist(watchlist);
+        return watchlistService.createWatchlist(ownerId, watchlist);
     }
 
     @DeleteMapping("/api/watchlist/{watchlistId}")
@@ -34,13 +34,13 @@ public class WatchlistController {
      * @return
      */
     @GetMapping("/api/watchlists")
-    public List<Widget> findAllWatchlists() {
+    public List<Watchlist> findAllWatchlists() {
         return watchlistService.findAllWatchlists();
     }
 
     @GetMapping("/api/watchlists/{watchlistId}")
-    public Widget findWatchlistById(
-            @PathVariable String widgetId) {
+    public Watchlist findWatchlistById(
+            @PathVariable Integer watchlistId) {
         return watchlistService.findWatchlistById(watchlistId);
     }
 
