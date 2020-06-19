@@ -3,11 +3,9 @@ package com.example.cs4550su1acabeyprojectserverjava.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -28,14 +26,26 @@ public class Watchlist {
     @UpdateTimestamp
     private LocalDateTime lastUpdated;
 
-    @ManyToMany(mappedBy = "followedWatchlists")
+    @ManyToMany
     @JsonIgnore
     private List<User> followers;
 
-    @ManyToMany(mappedBy = "onWatchlists")
+    @ManyToMany
+    @JoinTable(
+            name="WATCH_MEDIA",
+            joinColumns=@JoinColumn(name="MEDIA_ID", referencedColumnName="ID"),
+            inverseJoinColumns=@JoinColumn(name="WATCHLIST_ID", referencedColumnName="ID"))
     private List<Medium> media;
 
     public Watchlist() {
+    }
+
+    public Watchlist copyWatchlist(Watchlist other) {
+        this.setMedia(other.getMedia());
+        this.setFollowers(other.getFollowers());
+        this.setOwnerId(other.getOwnerId());
+        this.setPrivate(other.getPrivate());
+        return this;
     }
 
     public Integer getId() {

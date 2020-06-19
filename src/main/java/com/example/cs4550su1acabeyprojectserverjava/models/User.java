@@ -31,18 +31,18 @@ public class User {
     @OneToMany(mappedBy = "ownerId")
     private List<Watchlist> ownedWatchlists;
 
-    @ManyToMany(mappedBy = "followers")
+    @ManyToMany
     @JoinTable(
             name="FOLLOW_WATCHLIST",
             joinColumns=@JoinColumn(name="USER_ID", referencedColumnName="ID"),
             inverseJoinColumns=@JoinColumn(name="WATCHLIST_ID", referencedColumnName="ID"))
     private List<Watchlist> followedWatchlists;
 
-    @ManyToMany(mappedBy = "followers")
+    @ManyToMany
     @JoinTable(
             name="FOLLOW_USER",
-            joinColumns=@JoinColumn(name="USER_ID", referencedColumnName="ID"),
-            inverseJoinColumns=@JoinColumn(name="USER_ID", referencedColumnName="ID"))
+            joinColumns=@JoinColumn(name="USER_A_ID", referencedColumnName="ID"),
+            inverseJoinColumns=@JoinColumn(name="USER_B_ID", referencedColumnName="ID"))
     private List<User> followers;
 
 }

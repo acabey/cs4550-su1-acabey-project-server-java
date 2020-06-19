@@ -17,7 +17,7 @@ public class Medium {
     private String description;
     private String posterUrl;
 
-    @ManyToMany(mappedBy = "media")
+    @ManyToMany
     @JsonIgnore
     private List<Watchlist> onWatchlists;
 
