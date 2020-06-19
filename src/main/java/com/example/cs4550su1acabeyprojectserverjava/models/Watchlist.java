@@ -1,5 +1,8 @@
 package com.example.cs4550su1acabeyprojectserverjava.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -15,9 +18,11 @@ public class Watchlist {
 
     private Boolean isPrivate;
 
-    @ManyToMany(mappedBy = "followers")
+    @ManyToMany(mappedBy = "followedWatchlists")
+    @JsonIgnore
     private List<User> followers;
 
+    @ManyToMany(mappedBy = "onWatchlists")
     private List<Medium> media;
 
     public Watchlist() {

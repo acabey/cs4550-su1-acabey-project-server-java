@@ -1,5 +1,7 @@
 package com.example.cs4550su1acabeyprojectserverjava.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -20,9 +22,17 @@ public class User {
     private List<Watchlist> ownedWatchlists;
 
     @ManyToMany(mappedBy = "followers")
+    @JoinTable(
+            name="FOLLOW_WATCHLIST",
+            joinColumns=@JoinColumn(name="USER_ID", referencedColumnName="ID"),
+            inverseJoinColumns=@JoinColumn(name="WATCHLIST_ID", referencedColumnName="ID"))
     private List<Watchlist> followedWatchlists;
 
-    @ManyToMany(mappedBy = "friends")
-    private List<User> friends;
+    @ManyToMany(mappedBy = "followers")
+    @JoinTable(
+            name="FOLLOW_USER",
+            joinColumns=@JoinColumn(name="USER_ID", referencedColumnName="ID"),
+            inverseJoinColumns=@JoinColumn(name="USER_ID", referencedColumnName="ID"))
+    private List<User> followers;
 
 }
