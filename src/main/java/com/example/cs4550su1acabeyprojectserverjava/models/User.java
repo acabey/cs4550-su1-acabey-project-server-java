@@ -1,8 +1,11 @@
 package com.example.cs4550su1acabeyprojectserverjava.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -18,6 +21,12 @@ public class User {
     private String role;
     private String bio;
     private String imageUrl;
+
+    @CreationTimestamp
+    private LocalDateTime created;
+
+    @UpdateTimestamp
+    private LocalDateTime lastUpdated;
 
     @OneToMany(mappedBy = "ownerId")
     private List<Watchlist> ownedWatchlists;
