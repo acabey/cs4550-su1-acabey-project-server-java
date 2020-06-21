@@ -44,6 +44,25 @@ public class User {
             inverseJoinColumns=@JoinColumn(name="USER_B_ID", referencedColumnName="ID"))
     private List<User> followers;
 
+    public User() {
+    }
+
+    public User copyUser(User other) {
+        this.id = other.getId();
+        this.username = other.getUsername();
+        this.password = other.getPassword();
+        this.email = other.getEmail();
+        this.role = other.getRole();
+        this.bio = other.getBio();
+        this.imageUrl = other.getImageUrl();
+        this.created = other.getCreated();
+        this.lastUpdated = other.getLastUpdated();
+        this.ownedWatchlists = other.getOwnedWatchlists();
+        this.followedWatchlists = other.getFollowedWatchlists();
+        this.followers = other.getFollowers();
+        return this;
+    }
+
     public Integer getId() {
         return id;
     }

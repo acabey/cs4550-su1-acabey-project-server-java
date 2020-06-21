@@ -54,6 +54,12 @@ public class APIErrorSchema {
         this.nextActions = nextActions;
     }
 
+    public boolean isError() {
+        return error;
+    }
 
+    public void setError(boolean error) {
+        this.error = error;
+    }
 }
 

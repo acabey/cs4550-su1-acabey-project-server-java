@@ -11,8 +11,27 @@ public class UserService {
     UserRepository repository;
 
     public User createUser(User user) {
+        if (user.getRole() == null) {
+            user.setRole("USER");
+        }
         return repository.save(user);
     }
+
+    public User updateUser(String username, User updatedUser) {
+        User user = repository.findUserByUsername(username);
+
+        updatedUser.setId(user.getId());
+        user.copyUser(updatedUser);
+        user.setUsername(username);
+
+        try {
+            repository.save(user);
+            return user;
+        } catch (AssertionError e) {
+            return null;
+        }
+    }
+
     public User findUserById(Integer id) {
         return repository.findUserById(id);
     }

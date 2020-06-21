@@ -41,6 +41,34 @@ public class UserController {
         return currentUser;
     }
 
+    @PutMapping("/api/profile/{username}")
+    public ResponseEntity updateProfile(
+            @PathVariable String username,
+            @RequestBody User user,
+            HttpSession session) {
+        User attemptedUser = service.findUserByUsername(user.getUsername());
+        User currentUser = service.findUserByCredentials(user.getUsername(), user.getPassword());
+        if (attemptedUser == null) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("User not found");
+        }
+        else if (currentUser == null) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("Cannot update profile as anonymous user");
+        }
+        else if (currentUser.getRole() != "ADMIN" && currentUser != attemptedUser) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("Inadequate permissions to update profile");
+        } else {
+            User updatedUser = service.updateUser(username, user);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+        }
+
+    }
+
     @PostMapping("/api/login")
     public ResponseEntity login(
             @RequestBody User user,
@@ -52,7 +80,7 @@ public class UserController {
                     .body("User not found");
         }
         User currentUser = service.findUserByCredentials(user.getUsername(), user.getPassword());
-        if (attemptedUser == null) {
+        if (currentUser == null) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .body("Invalid username or password");
@@ -62,7 +90,8 @@ public class UserController {
     }
 
     @PostMapping("/api/logout")
-    public void logout(HttpSession session) {
+    public Integer logout(HttpSession session) {
         session.invalidate();
+        return 1;
     }
 }
