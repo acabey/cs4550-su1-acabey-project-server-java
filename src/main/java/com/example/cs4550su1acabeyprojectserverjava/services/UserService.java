@@ -17,6 +17,17 @@ public class UserService {
         return repository.save(user);
     }
 
+    public Integer deleteUser(String username) {
+        User user = repository.findUserByUsername(username);
+        if (user == null) return 0;
+        try {
+            repository.deleteById(user.getId());
+            return 1;
+        } catch (AssertionError e) {
+            return 0;
+        }
+    }
+
     public User updateUser(String username, User updatedUser) {
         User user = repository.findUserByUsername(username);
 

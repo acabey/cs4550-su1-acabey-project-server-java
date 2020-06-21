@@ -46,8 +46,9 @@ public class UserController {
             @PathVariable String username,
             @RequestBody User user,
             HttpSession session) {
-        User attemptedUser = service.findUserByUsername(user.getUsername());
-        User currentUser = service.findUserByCredentials(user.getUsername(), user.getPassword());
+
+        User attemptedUser = service.findUserByUsername(username);
+        User currentUser = (User)session.getAttribute("currentUser");
         if (attemptedUser == null) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
@@ -56,18 +57,47 @@ public class UserController {
         else if (currentUser == null) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body("Cannot update profile as anonymous user");
+                    .body(new APIErrorSchema("Cannot update profile as anonymous user"));
         }
-        else if (currentUser.getRole() != "ADMIN" && currentUser != attemptedUser) {
+        else if (!currentUser.getRole().equals("ADMIN") && !currentUser.equals(attemptedUser)) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body("Inadequate permissions to update profile");
+                    .body(new APIErrorSchema("Inadequate permissions to update profile"));
         } else {
             User updatedUser = service.updateUser(username, user);
             return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
         }
 
     }
+
+    @DeleteMapping("/api/profile/{username}")
+    public ResponseEntity deleteUser(
+            @PathVariable String username,
+            HttpSession session) {
+        User attemptedUser = service.findUserByUsername(username);
+        User currentUser = (User)session.getAttribute("currentUser");
+
+        if (attemptedUser == null) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(new APIErrorSchema("User not found"));
+        }
+        else if (currentUser == null) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(new APIErrorSchema("Cannot delete profile as anonymous user"));
+        }
+        else if (!currentUser.getRole().equals("ADMIN") && !currentUser.equals(attemptedUser)) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(new APIErrorSchema("Inadequate permissions to delete profile"));
+        } else {
+            Integer deletedUser = service.deleteUser(username);
+            return ResponseEntity.status(HttpStatus.OK).body(deletedUser);
+        }
+
+    }
+
 
     @PostMapping("/api/login")
     public ResponseEntity login(
@@ -77,13 +107,13 @@ public class UserController {
         if (attemptedUser == null) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body("User not found");
+                    .body(new APIErrorSchema("User not found"));
         }
         User currentUser = service.findUserByCredentials(user.getUsername(), user.getPassword());
         if (currentUser == null) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body("Invalid username or password");
+                    .body(new APIErrorSchema("Invalid username or password"));
         }
         session.setAttribute("currentUser", currentUser);
         return ResponseEntity.status(HttpStatus.OK).body(currentUser);
