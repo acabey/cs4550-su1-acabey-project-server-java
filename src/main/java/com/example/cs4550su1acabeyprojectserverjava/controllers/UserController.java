@@ -1,18 +1,15 @@
 package com.example.cs4550su1acabeyprojectserverjava.controllers;
 
+import com.example.cs4550su1acabeyprojectserverjava.utilities.APIErrorSchema;
 import com.example.cs4550su1acabeyprojectserverjava.models.User;
 import com.example.cs4550su1acabeyprojectserverjava.services.UserService;
-import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+
 
 @RestController
 @CrossOrigin(
@@ -24,19 +21,21 @@ public class UserController {
     UserService service;
 
     @PostMapping("/api/register")
-    public User register(
+    public ResponseEntity register(
             @RequestBody User user,
             HttpSession session) {
         User existingUser = service.findUserByUsername(user.getUsername());
         if(existingUser == null) {
             User currentUser = service.createUser(user);
             session.setAttribute("currentUser", currentUser);
-            return currentUser;
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(currentUser);
         }
-        return null;
+        return new ResponseEntity(new APIErrorSchema("User exists"), HttpStatus.FORBIDDEN);
     }
 
-    @PostMapping("/api/profile")
+    @GetMapping("/api/profile")
     public User profile(HttpSession session) {
         User currentUser = (User)session.getAttribute("currentUser");
         return currentUser;
