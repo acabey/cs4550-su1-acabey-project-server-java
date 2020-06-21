@@ -68,7 +68,7 @@ public class MediumController {
 
         byte[] baos;
         try {
-            baos = IOUtils.toByteArray(file);
+            baos = file.readAllBytes();
         } catch (IOException e) {
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY, "Image processing failed"

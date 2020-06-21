@@ -46,11 +46,10 @@ public class TVDBService {
 
     InputStream getPosterImage(Integer mediumId, boolean thumbnail) throws IOException {
 
-        String path = "/banners/posters/" + mediumId + "-1" + (thumbnail ? "_t" : "") + ",jpg";
-
-        URIBuilder uri = new URIBuilder().setHost(imageHost).setPath(path);
+        String path = "/banners/posters/" + mediumId + "-1" + (thumbnail ? "_t" : "") + ".jpg";
+        String url = imageHost + path;
         Request request = new Request.Builder()
-                .url(uri.toString())
+                .url(url)
                 .build();
         try (Response response = client.newCall(request).execute()) {
             return response.body().byteStream();
