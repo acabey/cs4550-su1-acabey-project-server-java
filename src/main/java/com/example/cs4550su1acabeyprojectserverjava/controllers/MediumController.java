@@ -66,14 +66,15 @@ public class MediumController {
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
 
-        byte[] baos;
-        try {
-            baos = file.readAllBytes();
-        } catch (IOException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNPROCESSABLE_ENTITY, "Image processing failed"
-            );
-        }
+        byte[] baos = {};
+        //try {
+        //    //baos = file.readAllBytes();
+        //    baos =
+        //} catch (IOException e) {
+        //    throw new ResponseStatusException(
+        //            HttpStatus.UNPROCESSABLE_ENTITY, "Image processing failed"
+        //    );
+        //}
 
         return new ResponseEntity<byte[]>(baos, headers, HttpStatus.OK);
     }

@@ -21,7 +21,7 @@ public class TVDBService {
 
     OkHttpClient client = new OkHttpClient();
 
-    Map<String, String> credentials = new HashMap<>() {{
+    Map<String, String> credentials = new HashMap<String, String>() {{
         put("apikey", "e5094420c444a38c3b46f926de91dde3");
         put("userkey", "5ED01E4096DD78.63651277");
         put("username", "acabey");
