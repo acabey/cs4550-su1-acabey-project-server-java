@@ -59,7 +59,7 @@ public class UserController {
                     .status(HttpStatus.FORBIDDEN)
                     .body(new APIErrorSchema("Cannot update profile as anonymous user"));
         }
-        else if (!currentUser.getRole().equals("ADMIN") && !currentUser.equals(attemptedUser)) {
+        else if (!currentUser.getRole().equals("ADMIN") && !currentUser.getId().equals(attemptedUser.getId())) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .body(new APIErrorSchema("Inadequate permissions to update profile"));
@@ -87,7 +87,7 @@ public class UserController {
                     .status(HttpStatus.FORBIDDEN)
                     .body(new APIErrorSchema("Cannot delete profile as anonymous user"));
         }
-        else if (!currentUser.getRole().equals("ADMIN") && !currentUser.equals(attemptedUser)) {
+        else if (!currentUser.getRole().equals("ADMIN") && !currentUser.getId().equals(attemptedUser.getId())) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .body(new APIErrorSchema("Inadequate permissions to delete profile"));

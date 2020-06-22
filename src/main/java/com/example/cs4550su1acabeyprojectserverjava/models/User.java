@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="users")
@@ -61,6 +62,28 @@ public class User {
         this.followedWatchlists = other.getFollowedWatchlists();
         this.followers = other.getFollowers();
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id) &&
+                username.equals(user.username) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password) &&
+                role.equals(user.role) &&
+                Objects.equals(bio, user.bio) &&
+                Objects.equals(imageUrl, user.imageUrl) &&
+                Objects.equals(ownedWatchlists, user.ownedWatchlists) &&
+                Objects.equals(followedWatchlists, user.followedWatchlists) &&
+                Objects.equals(followers, user.followers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, email, password, role, bio, imageUrl, created, lastUpdated, ownedWatchlists, followedWatchlists, followers);
     }
 
     public Integer getId() {
