@@ -3,6 +3,7 @@ package com.example.cs4550su1acabeyprojectserverjava.controllers;
 import com.example.cs4550su1acabeyprojectserverjava.models.Medium;
 import com.example.cs4550su1acabeyprojectserverjava.services.MediumService;
 import com.example.cs4550su1acabeyprojectserverjava.services.TVDBService;
+import com.example.cs4550su1acabeyprojectserverjava.utilities.APIErrorSchema;
 import javassist.bytecode.ByteArray;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,20 @@ public class MediumController {
             @PathVariable Integer watchlistId,
             @PathVariable Integer mediumid) {
         return mediumService.unwatchMedium(watchlistId, mediumid);
+    }
+
+    @GetMapping("/api/search/{title}")
+    public ResponseEntity searchMediaByTitle(
+            @PathVariable String title) {
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(tvdbService.searchForSeries(title));
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIErrorSchema(e.getMessage()));
+        }
     }
 
     @GetMapping(

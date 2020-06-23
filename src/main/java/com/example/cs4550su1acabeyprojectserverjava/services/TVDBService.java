@@ -5,10 +5,16 @@ import com.example.cs4550su1acabeyprojectserverjava.models.Medium;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.net.URISyntaxException;
 import java.util.*;
 
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import okhttp3.*;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +24,7 @@ public class TVDBService {
 
     private static final String imageHost = "https://thetvdb.com";
     private static final String apiHost = "https://api.thetvdb.com";
+    private String token = "";
 
     OkHttpClient client = new OkHttpClient();
 
@@ -28,20 +35,7 @@ public class TVDBService {
     }};
 
     public TVDBService() {
-        /*
-        return fetch(`${this.url}/login`, {
-            method: 'POST',
-            body: JSON.stringify(this.credentials),
-            headers: {
-                'content-type': 'application/json'
-            }
-        }).then((response) => {
-            return response.json()
-        }).then((tokenResponse) => {
-            this.token = tokenResponse['token']
-        });
-         */
-        //String loginResponse = this.post();
+        this.login();
     }
 
     InputStream getPosterImage(Integer mediumId, boolean thumbnail) throws IOException {
@@ -64,33 +58,103 @@ public class TVDBService {
         return this.getPosterImage(mediumId, true);
     }
 
-    String post(String url, String json) throws IOException {
+    Response post(String url, String json) throws IOException {
         RequestBody body = RequestBody.create(json, JSON);
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
+                .header("Bearer", this.token)
                 .build();
         try (Response response = client.newCall(request).execute()) {
-            return response.body().toString();
+            return response;
         }
     }
 
-    String get(String url) throws IOException {
+    Response get(String url) throws IOException, URISyntaxException {
+        return this.get(url, new ArrayList<NameValuePair>());
+    }
+
+    Response get(String url, List<NameValuePair> params) throws IOException, URISyntaxException {
+
+        String newUrl = new URIBuilder(url).addParameters(params).build().toString();
+
         Request request = new Request.Builder()
                 .url(url)
+                .get()
+                .header("Bearer", this.token)
                 .build();
         try (Response response = client.newCall(request).execute()) {
-            return response.body().toString();
+            return response;
         }
     }
 
     void login() {
+        String loginUrl = apiHost + "/login";
 
+        Gson gson = new Gson();
+        Type gsonType = new TypeToken<HashMap>(){}.getType();
+        String gsonString = gson.toJson(credentials,gsonType);
+
+        try {
+            Response response = this.post(loginUrl, gsonString);
+            String a = response.body().string();
+
+            if (response.isSuccessful()) {
+
+                ResponseBody responseBody = response.body();
+
+                String responseBodyString = responseBody.string();
+
+                JsonObject jsonObject = new JsonParser().parse(responseBodyString).getAsJsonObject();
+
+                String token = jsonObject.get("token").getAsString();
+                this.token = token;
+            } else {
+                throw new RuntimeException("Login request failed. Response unsuccessful");
+            }
+
+
+        } catch (IOException e) {
+            System.out.println("Failed to login to API!");
+        }
     }
 
 
     public List<Medium> searchForSeries(String name) {
-        return new ArrayList<Medium>();
+
+        String searchUrl = apiHost + "/search/series";
+
+        List<NameValuePair> searchParams = new ArrayList<NameValuePair>() {{
+            add(new BasicNameValuePair("name", name));
+        }};
+
+        try {
+
+            Response response = this.get(searchUrl, searchParams);
+
+            if (response.isSuccessful()) {
+                String responseBodyString = response.body().string();
+
+                JsonObject jsonObject = new JsonParser().parse(responseBodyString).getAsJsonObject();
+
+                JsonArray data = jsonObject.getAsJsonArray("data");
+
+                List<Medium> retMedia = new ArrayList<Medium>();
+
+                for (JsonElement jsonMedium : data) {
+                    retMedia.add(new Medium(jsonMedium.getAsJsonObject()));
+                }
+
+                return retMedia;
+            } else {
+                throw new RuntimeException("Search request not successful");
+            }
+
+
+        } catch (IOException | URISyntaxException e) {
+            throw new RuntimeException("Failed to search for media in TVDB service");
+        }
+
     }
 
 
