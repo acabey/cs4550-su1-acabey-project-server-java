@@ -63,11 +63,9 @@ public class TVDBService {
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
-                .header("Bearer", this.token)
+                .header("Authorization", "Bearer " + this.token)
                 .build();
-        try (Response response = client.newCall(request).execute()) {
-            return response;
-        }
+        return client.newCall(request).execute();
     }
 
     Response get(String url) throws IOException, URISyntaxException {
@@ -79,13 +77,11 @@ public class TVDBService {
         String newUrl = new URIBuilder(url).addParameters(params).build().toString();
 
         Request request = new Request.Builder()
-                .url(url)
+                .url(newUrl)
                 .get()
-                .header("Bearer", this.token)
+                .header("Authorization", "Bearer " + this.token)
                 .build();
-        try (Response response = client.newCall(request).execute()) {
-            return response;
-        }
+        return client.newCall(request).execute();
     }
 
     void login() {
@@ -97,14 +93,10 @@ public class TVDBService {
 
         try {
             Response response = this.post(loginUrl, gsonString);
-            String a = response.body().string();
 
             if (response.isSuccessful()) {
 
-                ResponseBody responseBody = response.body();
-
-                String responseBodyString = responseBody.string();
-
+                String responseBodyString = response.body().string();
                 JsonObject jsonObject = new JsonParser().parse(responseBodyString).getAsJsonObject();
 
                 String token = jsonObject.get("token").getAsString();
