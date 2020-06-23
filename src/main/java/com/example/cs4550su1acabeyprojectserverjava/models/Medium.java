@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,12 +37,12 @@ public class Medium {
     }
 
     public Medium(JsonObject e) {
-        this(e.get("id").getAsInt(),
-                e.get("seriesName").getAsString(),
-                e.get("overview").getAsString(),
-                e.get("poster").getAsString(),
-                e.get("network").getAsString(),
-                e.get("firstAired").getAsString());
+        this(e.has("id") && !e.get("id").isJsonNull() ? e.get("id").getAsInt() : 0,
+                e.has("seriesName") && !e.get("seriesName").isJsonNull() ? e.get("seriesName").getAsString() : "",
+                e.has("overview") && !e.get("overview").isJsonNull() ? e.get("overview").getAsString() : "",
+                e.has("poster") && !e.get("poster").isJsonNull() ? e.get("poster").getAsString() : "",
+                e.has("network") && !e.get("network").isJsonNull() ? e.get("network").getAsString() : "",
+                e.has("firstAired") && !e.get("firstAired").isJsonNull() ? e.get("firstAired").getAsString() : "");
     }
 
 }

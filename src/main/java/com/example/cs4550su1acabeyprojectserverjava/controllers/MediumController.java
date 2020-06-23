@@ -58,7 +58,7 @@ public class MediumController {
         } catch (RuntimeException e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new APIErrorSchema(e.getMessage()));
+                    .body(new APIErrorSchema("Failed to search media"));
         }
     }
 

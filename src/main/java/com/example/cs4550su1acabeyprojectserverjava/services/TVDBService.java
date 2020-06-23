@@ -134,7 +134,9 @@ public class TVDBService {
                 List<Medium> retMedia = new ArrayList<Medium>();
 
                 for (JsonElement jsonMedium : data) {
-                    retMedia.add(new Medium(jsonMedium.getAsJsonObject()));
+                    JsonObject obj = jsonMedium.getAsJsonObject();
+                    Medium gotMedium = new Medium(obj);
+                    retMedia.add(gotMedium);
                 }
 
                 return retMedia;
