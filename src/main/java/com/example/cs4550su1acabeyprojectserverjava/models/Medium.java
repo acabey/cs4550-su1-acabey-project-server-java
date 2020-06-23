@@ -45,4 +45,67 @@ public class Medium {
                 e.has("firstAired") && !e.get("firstAired").isJsonNull() ? e.get("firstAired").getAsString() : "");
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getTvdbId() {
+        return tvdbId;
+    }
+
+    public void setTvdbId(Integer tvdbId) {
+        this.tvdbId = tvdbId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
+    }
+
+    public String getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(String network) {
+        this.network = network;
+    }
+
+    public String getFirstAired() {
+        return firstAired;
+    }
+
+    public void setFirstAired(String firstAired) {
+        this.firstAired = firstAired;
+    }
+
+    public List<Watchlist> getOnWatchlists() {
+        return onWatchlists;
+    }
+
+    public void setOnWatchlists(List<Watchlist> onWatchlists) {
+        this.onWatchlists = onWatchlists;
+    }
 }
