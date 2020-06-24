@@ -57,6 +57,19 @@ public class UserController {
         }
     }
 
+
+    @GetMapping("/api/users/{userId}")
+    public User profileByUsername(@PathVariable Integer userId, HttpSession session) {
+        User currentUser = (User)session.getAttribute("currentUser");
+        User requestedUser = service.findUserById(userId);
+
+        if (currentUser.getId().equals(requestedUser.getId()) || currentUser.getRole().equals("ADMIN")) {
+            return requestedUser;
+        } else {
+            return requestedUser.anonymize();
+        }
+    }
+
     @PutMapping("/api/profile/{username}")
     public ResponseEntity updateProfile(
             @PathVariable String username,

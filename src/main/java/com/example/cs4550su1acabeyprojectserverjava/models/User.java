@@ -70,6 +70,8 @@ public class User {
         this.email = "";
         this.ownedWatchlists = this.getPublicOwnedWatchlists();
         this.followedWatchlists = this.getPublicFollowedWatchlists();
+
+        return this;
     }
 
     @Override
