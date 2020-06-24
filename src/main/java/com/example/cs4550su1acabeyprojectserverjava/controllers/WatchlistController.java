@@ -14,7 +14,7 @@ public class WatchlistController {
     @Autowired
     WatchlistService watchlistService;
 
-    @PostMapping("/api/watchlist")
+    @PostMapping("/api/users/{ownerId}/watchlists")
     public Watchlist createWatchlist(
             @PathVariable Integer ownerId,
             @RequestBody Watchlist watchlist) {
