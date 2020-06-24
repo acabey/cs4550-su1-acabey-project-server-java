@@ -28,20 +28,20 @@ public class MediumController {
     @Autowired
     TVDBService tvdbService;
 
-    @GetMapping("/api/watchlist/{watchlistId}/media")
+    @GetMapping("/api/watchlists/{watchlistId}/media")
     public List<Medium> findMediaForWatchlist(
             @PathVariable Integer watchlistId) {
         return mediumService.findMediaForWatchList(watchlistId);
     }
 
-    @PostMapping("/api/watchlist/{watchlistId}/media")
+    @PostMapping("/api/watchlists/{watchlistId}/media")
     public Integer watchMedium(
             @PathVariable Integer watchlistId,
             @PathVariable Integer mediumId) {
         return mediumService.unwatchMedium(watchlistId, mediumId);
     }
 
-    @DeleteMapping("/api/watchlist/{watchlistId}/media/{mediumId}")
+    @DeleteMapping("/api/watchlists/{watchlistId}/media/{mediumId}")
     public Integer unwatchMedium (
             @PathVariable Integer watchlistId,
             @PathVariable Integer mediumid) {
@@ -63,7 +63,7 @@ public class MediumController {
     }
 
     @GetMapping(
-            value="/api/medium/{mediumId}/poster",
+            value="/api/media/{mediumId}/poster",
             produces=MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public ResponseEntity<byte[]> getPosterImage(@PathVariable Integer mediumId) {

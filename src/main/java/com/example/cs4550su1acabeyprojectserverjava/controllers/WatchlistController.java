@@ -21,13 +21,13 @@ public class WatchlistController {
         return watchlistService.createWatchlist(ownerId, watchlist);
     }
 
-    @DeleteMapping("/api/watchlist/{watchlistId}")
+    @DeleteMapping("/api/watchlists/{watchlistId}")
     public Integer deleteWatchlist(
             @PathVariable Integer watchlistId) {
         return watchlistService.deleteWatchlist(watchlistId);
     }
 
-    @PutMapping("/api/watchlist/{watchlistId}")
+    @PutMapping("/api/watchlists/{watchlistId}")
     public Integer deleteWatchlist(
             @PathVariable Integer watchlistId,
             @RequestBody Watchlist newWatchlist) {
