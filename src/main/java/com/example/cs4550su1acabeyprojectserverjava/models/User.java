@@ -47,6 +47,13 @@ public class User {
     private List<User> followers;
 
     public User() {
+        this.id = 0;
+        this.username = "";
+        this.email = "";
+        this.password = "";
+        this.role = "";
+        this.bio = "";
+        this.imageUrl = "";
     }
 
     public User copyUser(User other) {

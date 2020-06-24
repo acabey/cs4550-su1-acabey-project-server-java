@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,6 +41,13 @@ public class Watchlist {
     private List<Medium> media;
 
     public Watchlist() {
+        this.id = 0;
+        this.title = "";
+        this.ownerId = 0;
+        this.isPrivate = false;
+        this.created = LocalDateTime.now();
+        this.lastUpdated = LocalDateTime.now();
+        this.followers = new ArrayList<User>();
     }
 
     public Watchlist copyWatchlist(Watchlist other) {
