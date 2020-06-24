@@ -16,7 +16,9 @@ public class Watchlist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String title;
     private Integer ownerId;
+
 
     private Boolean isPrivate;
 
@@ -46,6 +48,14 @@ public class Watchlist {
         this.setOwnerId(other.getOwnerId());
         this.setPrivate(other.getPrivate());
         return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Integer getId() {

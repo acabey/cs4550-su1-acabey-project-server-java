@@ -1,5 +1,6 @@
 package com.example.cs4550su1acabeyprojectserverjava.controllers;
 
+import com.example.cs4550su1acabeyprojectserverjava.models.Watchlist;
 import com.example.cs4550su1acabeyprojectserverjava.utilities.APIErrorSchema;
 import com.example.cs4550su1acabeyprojectserverjava.models.User;
 import com.example.cs4550su1acabeyprojectserverjava.services.UserService;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -39,6 +42,19 @@ public class UserController {
     public User profile(HttpSession session) {
         User currentUser = (User)session.getAttribute("currentUser");
         return currentUser;
+    }
+
+
+    @GetMapping("/api/profile/{username}")
+    public User profileByUsername(@PathVariable String username, HttpSession session) {
+        User currentUser = (User)session.getAttribute("currentUser");
+        User requestedUser = service.findUserByUsername(username);
+
+        if (currentUser.getId().equals(requestedUser.getId()) || currentUser.getRole().equals("ADMIN")) {
+            return requestedUser;
+        } else {
+            return requestedUser.anonymize();
+        }
     }
 
     @PutMapping("/api/profile/{username}")

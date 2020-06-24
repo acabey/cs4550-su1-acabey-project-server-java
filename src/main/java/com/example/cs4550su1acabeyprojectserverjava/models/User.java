@@ -5,6 +5,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -62,6 +63,13 @@ public class User {
         this.followedWatchlists = other.getFollowedWatchlists();
         this.followers = other.getFollowers();
         return this;
+    }
+
+    public User anonymize() {
+        this.password = "";
+        this.email = "";
+        this.ownedWatchlists = this.getPublicOwnedWatchlists();
+        this.followedWatchlists = this.getPublicFollowedWatchlists();
     }
 
     @Override
@@ -162,12 +170,36 @@ public class User {
         return ownedWatchlists;
     }
 
+    public List<Watchlist> getPublicOwnedWatchlists() {
+        List<Watchlist> publics = new ArrayList<>();
+
+        for (Watchlist w : this.ownedWatchlists) {
+            if (!w.getPrivate()) {
+                publics.add(w);
+            }
+        }
+
+        return publics;
+
+    }
+
     public void setOwnedWatchlists(List<Watchlist> ownedWatchlists) {
         this.ownedWatchlists = ownedWatchlists;
     }
 
     public List<Watchlist> getFollowedWatchlists() {
         return followedWatchlists;
+    }
+
+    public List<Watchlist> getPublicFollowedWatchlists() {
+        List<Watchlist> publics = new ArrayList<>();
+
+        for (Watchlist w : this.followedWatchlists) {
+            if (!w.getPrivate()) {
+                publics.add(w);
+            }
+        }
+        return publics;
     }
 
     public void setFollowedWatchlists(List<Watchlist> followedWatchlists) {
