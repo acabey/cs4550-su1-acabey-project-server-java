@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(
-        origins = "http://acabey-project-server-java.herokuapp.com",
+        origins = "https://acabey-project-server-java.herokuapp.com",
         allowedHeaders = "*",
         allowCredentials = "true")
 public class UserController {
