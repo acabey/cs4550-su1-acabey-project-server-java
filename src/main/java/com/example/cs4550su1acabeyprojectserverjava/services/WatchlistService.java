@@ -39,7 +39,7 @@ public class WatchlistService {
         }
     }
 
-    public Integer updateWatchlist(Integer watchlistId, Watchlist updatedWatchlist) {
+    public Watchlist updateWatchlist(Integer watchlistId, Watchlist updatedWatchlist) {
         Watchlist watchlist = repository.findWatchlistById(watchlistId);
 
         watchlist.copyWatchlist(updatedWatchlist);
@@ -47,9 +47,9 @@ public class WatchlistService {
 
         try {
             repository.save(watchlist);
-            return 1;
+            return watchlist;
         } catch (AssertionError e) {
-            return 0;
+            return null;
         }
     }
 

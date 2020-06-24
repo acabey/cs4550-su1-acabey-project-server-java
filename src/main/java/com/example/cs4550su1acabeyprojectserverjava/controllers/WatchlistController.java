@@ -2,13 +2,19 @@ package com.example.cs4550su1acabeyprojectserverjava.controllers;
 
 import com.example.cs4550su1acabeyprojectserverjava.models.Watchlist;
 import com.example.cs4550su1acabeyprojectserverjava.services.WatchlistService;
+import com.example.cs4550su1acabeyprojectserverjava.utilities.APIErrorSchema;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(
+        origins = "http://localhost:3000",
+        allowedHeaders = "*",
+        allowCredentials = "true")
 public class WatchlistController {
 
     @Autowired
@@ -28,10 +34,19 @@ public class WatchlistController {
     }
 
     @PutMapping("/api/watchlists/{watchlistId}")
-    public Integer deleteWatchlist(
+    public ResponseEntity updateWatchlist(
             @PathVariable Integer watchlistId,
             @RequestBody Watchlist newWatchlist) {
-        return watchlistService.updateWatchlist(watchlistId, newWatchlist);
+        Watchlist updated = watchlistService.updateWatchlist(watchlistId, newWatchlist);
+        if (updated != null) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(updated);
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new APIErrorSchema("Failed to update Watchlist"));
+        }
     }
 
     @GetMapping("/api/users/{ownerId}/watchlists")

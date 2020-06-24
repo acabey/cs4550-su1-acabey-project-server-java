@@ -19,7 +19,10 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(
+        origins = "http://localhost:3000",
+        allowedHeaders = "*",
+        allowCredentials = "true")
 public class MediumController {
 
     @Autowired
