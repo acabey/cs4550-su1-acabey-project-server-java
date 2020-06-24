@@ -27,6 +27,13 @@ public class WatchlistController {
         return watchlistService.deleteWatchlist(watchlistId);
     }
 
+    @PutMapping("/api/watchlist/{watchlistId}")
+    public Integer deleteWatchlist(
+            @PathVariable Integer watchlistId,
+            @RequestBody Watchlist newWatchlist) {
+        return watchlistService.updateWatchlist(watchlistId, newWatchlist);
+    }
+
     @GetMapping("/api/users/{ownerId}/watchlists")
     public List<Watchlist> getWatchlistsForOwner(@PathVariable Integer ownerId) {
         return watchlistService.findWatchlistsForOwner(ownerId);
