@@ -15,10 +15,10 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin(
-        origins = "http://acabey-project-server-java.herokuapp.com",
-        allowedHeaders = "*",
-        allowCredentials = "true")
+//@CrossOrigin(
+//        origins = "http://acabey-project-server-java.herokuapp.com",
+//        allowedHeaders = "*",
+//        allowCredentials = "true")
 public class UserController {
     @Autowired
     UserService service;
