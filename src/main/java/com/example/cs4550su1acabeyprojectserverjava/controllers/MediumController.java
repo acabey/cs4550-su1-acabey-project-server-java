@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(
-        origins = "http://localhost:8080",
+        origins = "https://acabey-project-server-java.herokuapp.com",
         allowedHeaders = "*",
         allowCredentials = "true")
 public class MediumController {
