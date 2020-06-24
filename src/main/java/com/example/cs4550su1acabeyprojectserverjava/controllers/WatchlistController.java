@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(
-        origins = "http://acabey-project-server-java.herokuapp.com",
-        allowedHeaders = "*",
-        allowCredentials = "true")
+//@CrossOrigin(
+//        origins = "http://acabey-project-server-java.herokuapp.com",
+//        allowedHeaders = "*",
+//        allowCredentials = "true")
 public class WatchlistController {
 
     @Autowired
